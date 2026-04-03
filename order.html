@@ -40,7 +40,7 @@
                 <div class="slide-title">SERIOUS PUNCH BUCKET</div>
                 <div class="slide-price">฿299.-</div>
                 <div class="slide-desc">
-                  5 Jan 26 – 22 Jul 26 · Prices may vary per channel
+                  5 Jan 26 - 22 Jul 26 · Prices may vary per channel
                 </div>
                 <button
                   class="slide-cta"
@@ -124,13 +124,24 @@
             <button class="tab" onclick="filterCat(this, 'dessert')">
               Desserts
             </button>
+
+             <a href="https://sp-group-project.vercel.app/custom-order.html" class="cart-tab">
+  <i data-lucide="shopping-cart" style="width:16px; height:16px;"></i>
+  View Order
+</a>
           </div>
 
           <div class="menu-grid" id="menuGrid"></div>
+
+
+</div>
+
         </main>
       </div>
 
-      <!-- ===================== MOBILE LAYOUT ===================== -->
+      <!-- ============= MOBILE LAYOUT ==========
+       ========================================== -->
+
       <div class="mobile-layout">
         <!-- CAROUSEL -->
         <div class="mobile-promo-carousel" id="mobCarousel">
@@ -139,7 +150,7 @@
             <div style="position: relative; z-index: 2">
               <div class="mob-slide-tag">LIMITED TIME</div>
               <div class="mob-slide-title">SERIOUS PUNCH BUCKET</div>
-              <div class="mob-slide-price">฿199.-</div>
+              <div class="mob-slide-price">฿299.-</div>
               <button class="mob-cta" onclick="addDeal('Pordee Bucket', 199)">
                 Order Now
               </button>
@@ -149,7 +160,7 @@
             <div class="mob-slide-bg mob-bg2"></div>
             <div style="position: relative; z-index: 2">
               <div class="mob-slide-tag">COLLAB DROP</div>
-              <div class="mob-slide-title">MVP 2026</div>
+              <div class="mob-slide-title">MVP EDITION 2026</div>
               <div class="mob-slide-price">฿199.-</div>
               <button class="mob-cta" onclick="addDeal('KFC Flip Flop', 199)">
                 Order Now
@@ -171,7 +182,7 @@
             <div class="mob-slide-bg mob-bg4"></div>
             <div style="position: relative; z-index: 2">
               <div class="mob-slide-tag">NEW ARRIVAL</div>
-              <div class="mob-slide-title">ZABB TEAM BOX</div>
+              <div class="mob-slide-title">SPICY HEAVY HITTER BOX</div>
               <div class="mob-slide-price">฿149.-</div>
               <button class="mob-cta" onclick="addDeal('Zabb Team Box', 149)">
                 Order Now
@@ -230,6 +241,9 @@
       lucide.createIcons();
     </script>
 
+    <!-- ============= JS : CONDITIONS ==========
+       ========================================== -->
+
     <script>
       const MENU = [
         {
@@ -238,7 +252,7 @@
           desc: "Classic fried chicken, 8 pieces",
           price: 299,
           cat: "bucket",
-          icon: "images/menu-list1",
+          icon: "images/menu-list2.jpeg",
         },
         {
           id: 2,
@@ -246,7 +260,7 @@
           desc: "Spicy chicken bucket",
           price: 599,
           cat: "bucket",
-          icon: "images/menu-list1",
+          icon: "images/menu-list2.jpeg",
         },
         {
           id: 3,
@@ -254,7 +268,7 @@
           desc: "Wingz Zabb + nuggets combo",
           price: 149,
           cat: "bucket",
-          icon: "images/menu-list1",
+          icon: "images/menu-list2.jpeg",
         },
         {
           id: 4,
@@ -262,7 +276,7 @@
           desc: "Crispy, spicy, and juicy",
           price: 89,
           cat: "sandwich",
-          icon: "images/menu-list1",
+          icon: "images/menu-list2.jpeg",
         },
         {
           id: 5,
@@ -270,7 +284,7 @@
           desc: "Original crispy chicken",
           price: 79,
           cat: "sandwich",
-          icon: "images/menu-list1",
+          icon: "images/menu-list2.jpeg",
         },
         {
           id: 6,
@@ -278,7 +292,7 @@
           desc: "Double patty, double flavor",
           price: 119,
           cat: "sandwich",
-          icon: "images/menu-list1",
+          icon: "images/menu-list2.jpeg",
         },
         {
           id: 7,
@@ -286,7 +300,7 @@
           desc: "Golden crispy fries",
           price: 39,
           cat: "side",
-          icon: "images/menu-list1",
+          icon: "images/menu-list2.jpeg",
         },
         {
           id: 8,
@@ -294,7 +308,7 @@
           desc: "Creamy classic slaw",
           price: 29,
           cat: "side",
-          icon: "images/menu-list1",
+          icon: "images/menu-list2.jpeg",
         },
         {
           id: 9,
@@ -302,7 +316,7 @@
           desc: "Creamy, cheesy goodness",
           price: 49,
           cat: "side",
-          icon: "images/menu-list1",
+          icon: "images/menu-list2.jpeg",
         },
         {
           id: 10,
@@ -310,7 +324,7 @@
           desc: "Rich chocolate treat",
           price: 45,
           cat: "dessert",
-          icon: "images/menu-list1",
+          icon: "images/menu-list2.jpeg",
         },
         {
           id: 11,
@@ -318,7 +332,7 @@
           desc: "Vanilla swirl",
           price: 35,
           cat: "dessert",
-          icon: "🍦",
+          icon: "images/menu-list2.jpeg",
         },
       ];
 
@@ -329,39 +343,35 @@
 
       function renderMenu(cat = "all") {
         const items = cat === "all" ? MENU : MENU.filter((m) => m.cat === cat);
-        document.getElementById("menuGrid").innerHTML = items
-          .map(
-            (m) => `
-    <div class="menu-card">
-      <div class="menu-img">${m.icon}</div>
-      <div class="menu-info">
-        <div class="menu-name">${m.name}</div>
-        <div class="menu-desc">${m.desc}</div>
-        <div class="menu-footer">
-          <div class="menu-price">฿${m.price}.-</div>
-          <button class="add-btn" onclick="addItem('${m.name}',${m.price})">+</button>
-        </div>
+       document.getElementById("menuGrid").innerHTML = items.map(m => `
+  <div class="menu-card">
+    <div class="menu-img">
+      <img src="${m.icon}" alt="${m.name}">
+    </div>
+    <div class="menu-info">
+      <div class="menu-name">${m.name}</div>
+      <div class="menu-desc">${m.desc}</div>
+      <div class="menu-footer">
+        <div class="menu-price">฿${m.price}.-</div>
+        <button class="add-btn" onclick="addItem('${m.name}',${m.price})">+</button>
       </div>
     </div>
-  `,
-          )
-          .join("");
+  </div>
+`).join("");
 
-        document.getElementById("mobMenuList").innerHTML = items
-          .map(
-            (m) => `
-    <div class="mob-card">
-      <div class="mob-card-img">${m.icon}</div>
-      <div class="mob-card-info">
-        <div class="mob-card-name">${m.name}</div>
-        <div class="mob-card-desc">${m.desc}</div>
-        <div class="mob-card-price">฿${m.price}.-</div>
-      </div>
-      <button class="mob-add-btn" onclick="addItem('${m.name}',${m.price})">+</button>
+        document.getElementById("mobMenuList").innerHTML = items.map(m => `
+  <div class="mob-card">
+    <div class="mob-card-img">
+      <img src="${m.icon}" alt="${m.name}">
     </div>
-  `,
-          )
-          .join("");
+    <div class="mob-card-info">
+      <div class="mob-card-name">${m.name}</div>
+      <div class="mob-card-desc">${m.desc}</div>
+      <div class="mob-card-price">฿${m.price}.-</div>
+    </div>
+    <button class="mob-add-btn" onclick="addItem('${m.name}',${m.price})">+</button>
+  </div>
+`).join("");
       }
 
       function addItem(name, price) {
