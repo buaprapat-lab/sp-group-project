@@ -34,34 +34,59 @@
         overflow: hidden;
       }
 
-      /* --- Sidebar --- */
+      /* ─── Sidebar (Desktop) ─── */
       aside {
         width: 90px;
         background: var(--card-black);
         display: flex;
         flex-direction: column;
         align-items: center;
-        padding: 20px 0;
-        gap: 30px;
+        padding: 30px 0;
+        gap: 35px;
         border-right: 2px solid #333;
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100vh;
+        z-index: 100;
       }
 
       .nav-icon {
-        color: var(--gray-sub);
+        color: #ffffff;
         cursor: pointer;
-        transition: 0.2s;
+        transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 3px;
+        font-size: 0.6rem;
+        font-family: "IBM Plex Sans Thai", sans-serif;
+        font-weight: 500;
+      }
+      .nav-icon span {
+        color: #ffffff;
+      }
+      .nav-icon:hover {
+        color: #ffffff;
+        opacity: 0.7;
+        transform: scale(1.1);
       }
       .nav-icon.active {
-        color: var(--accent-red);
+        color: var(--accent-red) !important;
+      }
+      .nav-icon.active span {
+        color: var(--accent-red) !important;
       }
 
-      /* --- Main Content --- */
+      /* ─── Main Content ─── */
       main {
         flex: 1;
         display: flex;
         flex-direction: column;
         padding: 25px;
         gap: 20px;
+        margin-left: 90px; /* เผื่อพื้นที่ให้ Desktop Sidebar */
+        height: 100vh;
       }
 
       header {
@@ -238,15 +263,117 @@
         transform: translateY(4px);
         box-shadow: 0 2px 0 #800018;
       }
+
+      /* ─── Bottom Nav (Mobile) ─── */
+      .bottom-nav {
+        display: none;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: var(--card-black);
+        border-top: 2px solid #333;
+        z-index: 100;
+        padding: 8px 0;
+        justify-content: space-around;
+      }
+      .bottom-nav .nav-icon {
+        color: #ffffff;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 3px;
+        font-size: 0.6rem;
+      }
+      .bottom-nav .nav-icon.active {
+        color: var(--accent-red);
+      }
+      .bottom-nav .nav-icon.active span {
+        color: var(--accent-red);
+      }
+      .bottom-nav .nav-icon svg {
+        width: 22px;
+        height: 22px;
+      }
+
+      /* =========================================
+         Responsive (หน้าจอแคบ) 
+         ========================================= */
+      @media (max-width: 900px) {
+        body {
+          flex-direction: column;
+          overflow-y: auto; /* ปล่อยให้บอดี้ scroll ได้เมื่อจอเล็ก */
+        }
+
+        aside {
+          display: none; /* ซ่อน Desktop Sidebar */
+        }
+
+        .bottom-nav {
+          display: flex; /* แสดง Mobile Nav */
+        }
+
+        main {
+          margin-left: 0;
+          height: auto;
+          padding: 15px;
+          padding-bottom: 80px; /* เผื่อพื้นที่ให้ Bottom Nav ไม่บังเนื้อหา */
+        }
+
+        header {
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 15px;
+        }
+
+        .order-info-card {
+          width: 100%;
+          justify-content: space-between;
+          gap: 20px;
+        }
+
+        .billing-container {
+          display: flex;
+          flex-direction: column;
+          overflow: visible;
+        }
+
+        .bill-list-card {
+          height: 350px;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .order-info-card {
+          flex-direction: column;
+          gap: 10px;
+        }
+
+        .list-header,
+        .bill-item {
+          grid-template-columns: 2fr 1fr 1fr 30px;
+          font-size: 0.8rem;
+        }
+      }
     </style>
   </head>
   <body>
     <aside>
-      <div class="nav-icon"><i data-lucide="layout-grid"></i></div>
-      <div class="nav-icon"><i data-lucide="clipboard-list"></i></div>
-      <div class="nav-icon active"><i data-lucide="banknote"></i></div>
-      <div class="nav-icon"><i data-lucide="history"></i></div>
-      <div class="nav-icon"><i data-lucide="settings"></i></div>
+      <div class="nav-icon">
+        <i data-lucide="layout-grid"></i><span>แผนผัง</span>
+      </div>
+      <div class="nav-icon">
+        <i data-lucide="clipboard-list"></i><span>ออเดอร์</span>
+      </div>
+      <div class="nav-icon active">
+        <i data-lucide="banknote"></i><span>เก็บเงิน</span>
+      </div>
+      <div class="nav-icon">
+        <i data-lucide="history"></i><span>ประวัติ</span>
+      </div>
+      <div class="nav-icon">
+        <i data-lucide="settings"></i><span>ตั้งค่า</span>
+      </div>
     </aside>
 
     <main>
@@ -324,16 +451,35 @@
       </div>
     </main>
 
+    <nav class="bottom-nav">
+      <div class="nav-icon">
+        <i data-lucide="layout-grid"></i><span>แผนผัง</span>
+      </div>
+      <div class="nav-icon">
+        <i data-lucide="clipboard-list"></i><span>ออเดอร์</span>
+      </div>
+      <div class="nav-icon active">
+        <i data-lucide="banknote"></i><span>เก็บเงิน</span>
+      </div>
+      <div class="nav-icon">
+        <i data-lucide="history"></i><span>ประวัติ</span>
+      </div>
+      <div class="nav-icon">
+        <i data-lucide="settings"></i><span>ตั้งค่า</span>
+      </div>
+    </nav>
+
     <script>
-      // Sample Order Data
       let orderItems = [
         { name: "Serious Punch Burger", qty: 2, price: 240 },
         { name: "KFC Styled Fries (L)", qty: 1, price: 89 },
         { name: "Coca-Cola Refill", qty: 3, price: 135 },
         { name: "Spicy Wing (6pcs)", qty: 1, price: 159 },
+        { name: "Onion Rings", qty: 1, price: 79 },
+        { name: "Extra Cheese", qty: 2, price: 40 },
       ];
 
-      let customerPay = 1000; // Default example for cash
+      let customerPay = 1000;
 
       function renderBill() {
         const listContainer = document.getElementById("bill-items");
@@ -382,7 +528,6 @@
           .querySelectorAll(".method-btn")
           .forEach((btn) => btn.classList.remove("active"));
         event.currentTarget.classList.add("active");
-        // Logic to change payment behavior could go here
       }
 
       function removeItem(index) {
@@ -394,10 +539,9 @@
 
       function confirmPayment() {
         alert("Payment Confirmed! Printing Receipt...");
-        window.location.reload(); // Reset for next customer
+        window.location.reload();
       }
 
-      // Init
       renderBill();
       lucide.createIcons();
     </script>
