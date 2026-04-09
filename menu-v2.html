@@ -1,0 +1,547 @@
+<!doctype html>
+<html lang="th">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Crispy Co. | Serious Punch Mode</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Sans+Thai:wght@300;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              primary: "#242424",
+              secondary: "#E4002B",
+              accent: "#DC5F00",
+              neutral: "#eeeeee",
+            },
+          },
+        },
+      };
+    </script>
+
+    <style>
+      :root {
+        --red: #e4002b;
+        --black: #242424;
+        --bg: #eeeeee;
+        --radius: 12px;
+      }
+      body {
+        font-family: "IBM Plex Sans Thai", sans-serif;
+        background: var(--bg);
+        color: var(--black);
+      }
+      h1,
+      h2,
+      h3,
+      .bebas {
+        font-family: "Bebas Neue", sans-serif;
+        letter-spacing: 1px;
+      }
+
+      /* --- PROMO PANEL (DESKTOP) --- */
+      .promo-panel {
+        width: 420px;
+        flex-shrink: 0;
+        position: sticky;
+        top: 64px;
+        height: calc(100vh - 64px);
+        background: var(--black);
+        overflow: hidden;
+      }
+      .promo-slide {
+        position: absolute;
+        inset: 0;
+        opacity: 0;
+        transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+      }
+      .promo-slide.active {
+        opacity: 1;
+      }
+
+      .slide-img-container {
+        position: absolute;
+        inset: 0;
+        z-index: 1;
+      }
+      .slide-img-container img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      /* Gradient Overlay ให้ตัวหนังสือชัด */
+      .slide-img-container::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+          to top,
+          rgba(0, 0, 0, 0.95) 10%,
+          rgba(0, 0, 0, 0.4) 50%,
+          transparent 100%
+        );
+      }
+
+      .slide-content {
+        position: relative;
+        z-index: 2;
+        padding: 40px 30px;
+        color: white;
+      }
+      .slide-tag {
+        color: var(--red);
+        font-weight: 800;
+        font-size: 14px;
+        letter-spacing: 3px;
+      }
+      .slide-title {
+        font-size: 3.5rem;
+        line-height: 0.9;
+        margin: 10px 0;
+      }
+      .slide-price {
+        font-size: 2.5rem;
+        color: #fff;
+        margin-bottom: 15px;
+      }
+
+      /* --- MENU GRID --- */
+      .menu-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+        gap: 25px;
+      }
+      .menu-card {
+        background: #fff;
+        border-radius: var(--radius);
+        border: 2px solid transparent;
+        transition: 0.3s;
+        overflow: hidden;
+      }
+      .menu-card:hover {
+        border-color: var(--black);
+        transform: translateY(-5px);
+        box-shadow: 10px 10px 0px rgba(0, 0, 0, 0.1);
+      }
+      .menu-img-box {
+        height: 180px;
+        background: #f0f0f0;
+        position: relative;
+        overflow: hidden;
+      }
+      .menu-img-box img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .add-btn {
+        background: var(--red);
+        color: white;
+        padding: 10px 15px;
+        border-radius: 6px;
+        font-weight: bold;
+        transition: 0.2s;
+      }
+      .add-btn:hover {
+        background: #000;
+      }
+
+      /* --- MOBILE --- */
+      @media (max-width: 768px) {
+        .promo-panel {
+          display: none;
+        }
+        .mobile-promo {
+          height: 350px;
+          position: relative;
+          background: #000;
+          overflow: hidden;
+        }
+      }
+
+      .toast {
+        position: fixed;
+        bottom: 30px;
+        right: 30px;
+        background: var(--black);
+        color: white;
+        padding: 15px 25px;
+        border-radius: 8px;
+        transform: translateY(100px);
+        transition: 0.3s;
+        z-index: 1000;
+        border-left: 5px solid var(--red);
+      }
+      .toast.show {
+        transform: translateY(0);
+      }
+    </style>
+  </head>
+  <body>
+    <header class="bg-primary text-neutral shadow-lg">
+      <nav
+        class="container mx-auto px-4 py-4 flex justify-between items-center"
+      >
+        <div class="flex items-center">
+          <a href="#" class="text-2xl font-bold text-accent bebas"> LOGO </a>
+        </div>
+        <div class="hidden md:flex space-x-8 items-center">
+          <ul class="flex space-x-6">
+            <li>
+              <a href="index.html" class="hover:text-secondary transition"
+                >Home</a
+              >
+            </li>
+            <li>
+              <a href="menu.html" class="text-secondary font-bold">Menu</a>
+            </li>
+            <li>
+              <a
+                href="custom-order.html"
+                class="hover:text-secondary transition"
+                >Order</a
+              >
+            </li>
+          </ul>
+          <div class="flex items-center gap-4 bg-[#333] px-4 py-2 rounded-full">
+            <i data-lucide="shopping-cart" class="w-5 h-5 text-secondary"></i>
+            <span id="cartCountDesktop" class="font-bold">0</span>
+          </div>
+          <button
+            class="bg-secondary hover:bg-accent text-neutral px-6 py-2 rounded-full font-semibold transition"
+          >
+            <a href="login.html">Sign In</a>
+          </button>
+        </div>
+        <div class="md:hidden flex items-center">
+          <button
+            id="mobile-menu-button"
+            class="text-neutral focus:outline-none"
+          >
+            <svg
+              class="w-8 h-8"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M4 6h16M4 12h16m-7 6h7"
+              ></path>
+            </svg>
+          </button>
+        </div>
+      </nav>
+      <div
+        id="mobile-menu"
+        class="hidden md:hidden bg-primary border-t border-accent/20"
+      >
+        <ul class="flex flex-col p-4 space-y-4">
+          <li>
+            <a href="index.html" class="block hover:text-secondary">Home</a>
+          </li>
+          <li><a href="menu.html" class="block text-secondary">Menu</a></li>
+          <li>
+            <button
+              class="w-full bg-secondary text-neutral px-6 py-2 rounded-lg font-semibold"
+            >
+              <a href="login.html">Sign In</a>
+            </button>
+          </li>
+        </ul>
+      </div>
+    </header>
+
+    <div class="flex flex-col md:flex-row min-h-screen">
+      <aside class="promo-panel hidden md:block" id="promoContainer"></aside>
+
+      <main class="flex-1 p-8 md:p-12">
+        <div class="mb-10">
+          <span class="text-secondary font-black tracking-widest text-sm"
+            >EXPLORE FLAVORS</span
+          >
+          <h2 class="text-5xl font-black bebas mt-2">SERIOUS SELECTIONS</h2>
+        </div>
+
+        <div class="flex gap-3 mb-8 overflow-x-auto pb-2" id="catTabs">
+          <button
+            class="tab active bg-primary text-white px-6 py-2 rounded-md font-bold"
+            onclick="filterMenu('all', this)"
+          >
+            ALL
+          </button>
+          <button
+            class="tab border-2 border-primary px-6 py-2 rounded-md font-bold"
+            onclick="filterMenu('bucket', this)"
+          >
+            BUCKETS
+          </button>
+          <button
+            class="tab border-2 border-primary px-6 py-2 rounded-md font-bold"
+            onclick="filterMenu('sandwich', this)"
+          >
+            SANDWICHES
+          </button>
+          <button
+            class="tab border-2 border-primary px-6 py-2 rounded-md font-bold"
+            onclick="filterMenu('side', this)"
+          >
+            SIDES
+          </button>
+        </div>
+
+        <div class="menu-grid" id="menuGrid"></div>
+      </main>
+    </div>
+
+    <div
+      class="md:hidden fixed bottom-0 left-0 right-0 bg-primary p-4 flex justify-between items-center text-white z-50"
+    >
+      <div>
+        <div class="text-xs opacity-60 uppercase font-bold" id="mobCartCount">
+          0 Items
+        </div>
+        <div class="text-xl font-black text-secondary" id="mobCartTotal">
+          ฿0.-
+        </div>
+      </div>
+      <button
+        class="bg-secondary px-8 py-3 rounded-full font-black text-sm bebas"
+        onclick="alert('Proceed to Checkout')"
+      >
+        VIEW CART <i data-lucide="arrow-right" class="inline w-4 h-4"></i>
+      </button>
+    </div>
+
+    <div class="toast" id="toast">Item added to cart!</div>
+
+    <script>
+      const PROMOS = [
+        {
+          tag: "LIMITED TIME",
+          title: "PORDEE BUCKET",
+          price: "฿199.-",
+          img: "images/pro-2.jpeg",
+        },
+        {
+          tag: "HOT DROP",
+          title: "ZABB TEAM BOX",
+          price: "฿149.-",
+          img: "images/pro-3.webp",
+        },
+        {
+          tag: "SHARING",
+          title: "CHICK N' SHARE",
+          price: "฿99.-",
+          img: "images/pro-1.webp",
+        },
+        {
+          tag: "NEW",
+          title: "FLIP FLOP SET",
+          price: "฿199.-",
+          img: "images/pro-4.jpeg",
+        },
+      ];
+
+      const MENU = [
+        {
+          id: 1,
+          name: "Signature 8pc Bucket",
+          price: 299,
+          cat: "bucket",
+          img: "https://www.kfc.co.th/kfcth-assets/images/items/lg/D-8PC-BKT.jpg",
+          desc: "Classic Original Recipe chicken.",
+        },
+        {
+          id: 2,
+          name: "Party Pack 20pc",
+          price: 119,
+          cat: "bucket",
+          img: "https://www.kfc.co.th/kfcth-assets/images/items/lg/D-ZING-DBL.jpg",
+          desc: "Extra spicy bucket",
+        },
+        {
+          id: 3,
+          name: "Zabb Team Box",
+          price: 149,
+          cat: "bucket",
+          img: "https://www.kfc.co.th/kfcth-assets/images/items/lg/D-ZABB-T-BOX.jpg",
+          desc: "Wingz Zabb + nuggets combo.",
+        },
+        {
+          id: 4,
+          name: "Spicy Chicken Sandwich",
+          price: 89,
+          cat: "sandwich",
+          img: "https://www.kfc.co.th/kfcth-assets/images/items/lg/S-FRIES-L.jpg",
+          desc: "Crispy, spicy, and juicy",
+        },
+        {
+          id: 5,
+          name: "Classic Sandwich",
+          price: 69,
+          cat: "sandwich",
+          img: "https://www.kfc.co.th/kfcth-assets/images/items/lg/S-COLE-S.jpg",
+          desc: "Original crispy chicken",
+        },
+        {
+          id: 6,
+          name: "Zinger Double",
+          price: 199,
+          cat: "sandwich",
+          img: "https://www.kfc.co.th/kfcth-assets/images/items/lg/S-COLE-S.jpg",
+          desc: "Double patty, double flavor",
+        },
+        {
+          id: 7,
+          name: "Golden Fries (L)",
+          price: 49,
+          cat: "side",
+          img: "https://www.kfc.co.th/kfcth-assets/images/items/lg/S-COLE-S.jpg",
+          desc: "Golden crispy fries",
+        },
+        {
+          id: 8,
+          name: "Coleslaw",
+          price: 39,
+          cat: "side",
+          img: "https://www.kfc.co.th/kfcth-assets/images/items/lg/S-COLE-S.jpg",
+          desc: "Creamy classic slaw",
+        },
+        {
+          id: 9,
+          name: "Mac & Cheese",
+          price: 49,
+          cat: "side",
+          img: "https://www.kfc.co.th/kfcth-assets/images/items/lg/S-COLE-S.jpg",
+          desc: "Creamy, cheesey goodness",
+        },
+        {
+          id: 10,
+          name: "Chocolate Cupcake",
+          price: 45,
+          cat: "desserts",
+          img: "https://www.kfc.co.th/kfcth-assets/images/items/lg/S-COLE-S.jpg",
+          desc: "Rich chocolate treat",
+        },
+        {
+          id: 11,
+          name: "Soft serve",
+          price: 39,
+          cat: "desserts",
+          img: "https://www.kfc.co.th/kfcth-assets/images/items/lg/S-COLE-S.jpg",
+          desc: "Vanilla swirl",
+        },
+      ];
+
+      let cart = [];
+      let currentSlide = 0;
+
+      // --- RENDER PROMOS ---
+      function renderPromos() {
+        const container = document.getElementById("promoContainer");
+        container.innerHTML = PROMOS.map(
+          (p, i) => `
+          <div class="promo-slide ${i === 0 ? "active" : ""}">
+            <div class="slide-img-container">
+              <img src="${p.img}" alt="${p.title}">
+            </div>
+            <div class="slide-content">
+              <span class="slide-tag bebas">${p.tag}</span>
+              <h2 class="slide-title bebas">${p.title}</h2>
+              <div class="slide-price bebas">${p.price}</div>
+              <button class="bg-secondary text-white px-8 py-4 rounded-md font-bold bebas text-xl hover:scale-105 transition" onclick="addToCart('${p.title}', ${p.price.replace("฿", "").replace(".-", "")})">ORDER NOW</button>
+            </div>
+          </div>
+        `,
+        ).join("");
+      }
+
+      // --- RENDER MENU ---
+      function renderMenu(filter = "all") {
+        const grid = document.getElementById("menuGrid");
+        const items =
+          filter === "all" ? MENU : MENU.filter((m) => m.cat === filter);
+        grid.innerHTML = items
+          .map(
+            (m) => `
+          <div class="menu-card">
+            <div class="menu-img-box"><img src="${m.img}" alt="${m.name}"></div>
+            <div class="p-5">
+              <h3 class="font-bold text-lg mb-1">${m.name}</h3>
+              <p class="text-xs text-gray-500 mb-4">${m.desc}</p>
+              <div class="flex justify-between items-center">
+                <span class="text-xl font-black text-secondary">฿${m.price}</span>
+                <button class="add-btn" onclick="addToCart('${m.name}', ${m.price})"><i data-lucide="plus" class="w-5 h-5"></i></button>
+              </div>
+            </div>
+          </div>
+        `,
+          )
+          .join("");
+        lucide.createIcons();
+      }
+
+      function filterMenu(cat, btn) {
+        document.querySelectorAll("#catTabs button").forEach((b) => {
+          b.classList.remove("bg-primary", "text-white");
+          b.classList.add("border-primary");
+        });
+        btn.classList.add("bg-primary", "text-white");
+        renderMenu(cat);
+      }
+
+      function addToCart(name, price) {
+        cart.push({ name, price });
+        updateUI();
+        const toast = document.getElementById("toast");
+        toast.innerText = `Added: ${name}`;
+        toast.classList.add("show");
+        setTimeout(() => toast.classList.remove("show"), 2000);
+      }
+
+      function updateUI() {
+        const total = cart.reduce((sum, item) => sum + item.price, 0);
+        document.getElementById("cartCountDesktop").innerText = cart.length;
+        document.getElementById("mobCartCount").innerText =
+          `${cart.length} Items`;
+        document.getElementById("mobCartTotal").innerText = `฿${total}.-`;
+      }
+
+      // Carousel logic
+      function nextSlide() {
+        const slides = document.querySelectorAll(".promo-slide");
+        slides[currentSlide].classList.remove("active");
+        currentSlide = (currentSlide + 1) % PROMOS.length;
+        slides[currentSlide].classList.add("active");
+      }
+
+      // Init
+      window.onload = () => {
+        renderPromos();
+        renderMenu();
+        setInterval(nextSlide, 5000);
+        lucide.createIcons();
+
+        // Mobile menu toggle
+        document.getElementById("mobile-menu-button").onclick = () => {
+          document.getElementById("mobile-menu").classList.toggle("hidden");
+        };
+      };
+    </script>
+  </body>
+</html>
